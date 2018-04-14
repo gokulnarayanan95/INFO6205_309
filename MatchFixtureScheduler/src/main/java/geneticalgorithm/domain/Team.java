@@ -12,6 +12,8 @@ package geneticalgorithm.domain;
 public class Team {
     String name;
     Location homeGround;
+    
+   
 
     public Team() {
     }
@@ -21,8 +23,8 @@ public class Team {
        this.name=name;
     }
 
-    
-
+  
+ 
     public String getName() {
         return name;
     }

@@ -11,8 +11,9 @@ package geneticalgorithm.domain;
  */
 public class Location {
     String locationName;
+    
 
-    public Location(String locationname) {
+      public Location(String locationname) {
         this.locationName=locationname;
     }
 
