@@ -1,32 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package geneticalgorithm.domain;
 
 /**
+ * Data structure for storing Locations
  *
- * @author naray
+ * @author Gokul Anantha Narayanan, Krupashankar Sundararajan, Raghavan Renganathan
+ * @version 1.0
+ * @since 04/10/2018
  */
 public class Location {
+    /**
+     * Location of the match
+     */
     String locationName;
-    
 
-      public Location(String locationname) {
-        this.locationName=locationname;
+    /**
+     * Creates an instance with passed location
+     *
+     * @param locationName Name of the location
+     */
+    public Location(String locationName) {
+        this.locationName = locationName;
     }
 
+    /**
+     * Creates an instance with default values
+     */
     public Location() {
     }
 
+    /**
+     * Getter method for {@code String locationName}
+     *
+     * @return The value of the variable locationName
+     */
     public String getLocationName() {
         return locationName;
     }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-    
-    
 }
