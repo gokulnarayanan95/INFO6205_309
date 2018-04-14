@@ -5,6 +5,7 @@
  */
 package geneticalgorithm;
 
+import geneticalgorithm.domain.Schedule;
 import geneticalgorithm.domain.Fixture;
 
 /**
