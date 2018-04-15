@@ -1,5 +1,8 @@
 package geneticalgorithm;
 
+import geneticalgorithm.domain.Fixture;
+import geneticalgorithm.domain.Schedule;
+
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -10,22 +13,17 @@ import java.util.concurrent.CompletableFuture;
  * @since 04/14/2018
  */
 public class GeneticAlgorithmDriver {
-    static final double MUTATION_RATE = 0.015;
+    static final double MUTATION_RATE = 0.05;
     static final double CROSSOVER_RATE = 0.5;
     static final int TOURNAMENT_SELECTION_SIZE = 50;
-    static final int NUMB_OF_ELITE_SCHEDULES = 1;
 
     private static final int POPULATION_SIZE = 5000;
     private static final int COLONY_SIZE = 100;
     private static Population population = null;
-    private static int scheduleNumber = 0;
-    private static int fixtureNumber = 1;
     private static Data data = new Data();
 
     public static void main(String[] args) {
         runAlgorithm(0, POPULATION_SIZE);
-//        population = new Population(POPULATION_SIZE, data, true);
-//        reproduce();
     }
 
     private static void runAlgorithm(int from, int to) {
@@ -65,18 +63,38 @@ public class GeneticAlgorithmDriver {
     }
 
     private static void reproduce() {
-        int generationNumber = 0;
+        int generation = 0;
         Algorithm algorithm = new Algorithm(data);
-
-        fixtureNumber = 1;
 
         while (population.getSchedules().get(0).getFitness() != 1.0) {
             population = algorithm.evolve(population).sortByFitness();
-            scheduleNumber = 0;
-            population.getSchedules().forEach(schedule -> System.out.println("       " + scheduleNumber++ +
-                    "     | " + schedule + " | " +
-                    String.format("%.5f", schedule.getFitness()) +
-                    " | " + schedule.getConflicts()));
+
+            Schedule best = population.getSchedules().get(0);
+            Schedule worst = population.getSchedules().get(population.size() - 1);
+
+            System.out.println("Generation - " + (++generation));
+            System.out.println("Best Schedule:");
+            System.out.println(String.format("Fitness = %.5f", best.getFitness()));
+            System.out.println("Conflicts = " + best.getConflicts());
+
+            System.out.println("Worst Schedule:");
+            System.out.println(String.format("Fitness = %.5f", worst.getFitness()));
+            System.out.println("Conflicts = " + worst.getConflicts());
+
+            System.out.println("\n\nBest Schedule:\n");
+
+            System.out.println("Date\t\t|\t\tHome Team\t\t|\t\tAway Team\t\t|\t\tLocation");
+            best.getFixures().sort((f1, f2) -> {
+                if (f1.getDate().after(f2.getDate()))
+                    return 1;
+                else if (f1.getDate().before(f2.getDate()))
+                    return -1;
+                else
+                    return 0;
+            });
+            for (Fixture f : best.getFixures()) {
+                System.out.println(f);
+            }
         }
     }
 }

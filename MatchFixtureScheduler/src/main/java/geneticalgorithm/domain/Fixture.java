@@ -1,5 +1,6 @@
 package geneticalgorithm.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -39,7 +40,7 @@ public class Fixture {
      *
      * @return The value of the variable date
      */
-    Date getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -48,7 +49,7 @@ public class Fixture {
      *
      * @return The value of the variable homeTeam
      */
-    Team getHomeTeam() {
+    public Team getHomeTeam() {
         return homeTeam;
     }
 
@@ -57,7 +58,7 @@ public class Fixture {
      *
      * @return The value of the variable awayTeam
      */
-    Team getAwayTeam() {
+    public Team getAwayTeam() {
         return awayTeam;
     }
 
@@ -66,8 +67,18 @@ public class Fixture {
      *
      * @return The value of the variable location
      */
-    Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 
+    /**
+     * Convert the object into a String
+     *
+     * @return String equivalent of the Object
+     */
+    @Override
+    public String toString() {
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        return String.format("%s\t\t|\t\t%s\t\t\t|\t\t\t%s\t\t\t|\t\t\t%s", df.format(date), homeTeam, awayTeam, location);
+    }
 }

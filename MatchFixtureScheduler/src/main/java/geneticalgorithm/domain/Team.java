@@ -69,4 +69,14 @@ public class Team {
     public int hashCode() {
         return Objects.hash(name, homeGround);
     }
+
+    /**
+     * Convert the object into a String
+     *
+     * @return String equivalent of the Object
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
 }

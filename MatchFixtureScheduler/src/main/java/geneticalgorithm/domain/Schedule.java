@@ -78,14 +78,24 @@ public class Schedule {
         for (Location location : data.getLocationList()) {
             matchesInLocation.put(location, 0);
         }
+
+        int totalFixtures = data.getTeamList().size() * (data.getTeamList().size() - 1);
+
+//        for (int i = 0; i < totalFixtures; i++) {
+//            Team homeTeam = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()));
+//            Team opponent;
+//            while ((opponent = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()))).equals(homeTeam));
+//            Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
+//
+//            fixtureList.add(new Fixture(d, homeTeam, opponent, homeTeam.getHomeGround()));
+//        }
         for (Team team : data.getTeamList()) {
             for (Team opponent : data.getTeamList()) {
                 if (team == opponent)
                     continue;
                 Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
-                Location l = data.getLocationList().get((int) (data.getLocationList().size() * Math.random()));
 
-                fixtureList.add(new Fixture(d, team, opponent, l));
+                fixtureList.add(new Fixture(d, team, opponent, team.getHomeGround()));
             }
         }
     }
@@ -135,27 +145,39 @@ public class Schedule {
     private double computeFitness() {
         conflicts = 0;
 
+        matchesPlayed.clear();
+        matchesInLocation.clear();
+        homeMatches.clear();
         for (int i = 0; i < fixtureList.size(); i++) {
             Fixture f1 = fixtureList.get(i);
 
             // Adding penalties for scheduling matches where the probability of raining is high
-            int weatherIndex = weathers.get(f1.getDate().toString()).get(f1.getLocation());
-            if (weatherIndex > 50 && weatherIndex <= 70)
+            int weatherIndex = weathers.get(Data.dateFormat.format(f1.getDate())).get(f1.getLocation());
+            if (weatherIndex > 70)
                 conflicts++;
-            if (weatherIndex > 70 && weatherIndex <= 90)
-                conflicts += 2;
-            if (weatherIndex > 90)
-                conflicts += 3;
 
             // Calculation of total matches played by each team
-            matchesPlayed.put(f1.getHomeTeam(), matchesPlayed.get(f1.getHomeTeam()) + 1);
-            matchesPlayed.put(f1.getAwayTeam(), matchesPlayed.get(f1.getAwayTeam()) + 1);
+            if (matchesPlayed.containsKey(f1.getHomeTeam()))
+                matchesPlayed.put(f1.getHomeTeam(), matchesPlayed.get(f1.getHomeTeam()) + 1);
+            else
+                matchesPlayed.put(f1.getHomeTeam(), 1);
+
+            if (matchesPlayed.containsKey(f1.getAwayTeam()))
+                matchesPlayed.put(f1.getAwayTeam(), matchesPlayed.get(f1.getAwayTeam()) + 1);
+            else
+                matchesPlayed.put(f1.getAwayTeam(), 1);
 
             // Calculation of total matches played by each location
-            matchesInLocation.put(f1.getLocation(), matchesInLocation.get(f1.getLocation()) + 1);
+            if (matchesInLocation.containsKey(f1.getLocation()))
+                matchesInLocation.put(f1.getLocation(), matchesInLocation.get(f1.getLocation()) + 1);
+            else
+                matchesInLocation.put(f1.getLocation(), 1);
 
             // Calculation of total matches played at home ground
-            homeMatches.put(f1.getHomeTeam(), homeMatches.get(f1.getHomeTeam()) + 1);
+            if (homeMatches.containsKey(f1.getHomeTeam()))
+                homeMatches.put(f1.getHomeTeam(), homeMatches.get(f1.getHomeTeam()) + 1);
+            else
+                homeMatches.put(f1.getHomeTeam(), 1);
 
             // Computing next day
             Date currentDate = f1.getDate();
@@ -195,7 +217,7 @@ public class Schedule {
 
         // Each location should have hosted 7 matches
         Iterator<Map.Entry<Location, Integer>> entries2 = matchesInLocation.entrySet().iterator();
-        while (entries.hasNext()) {
+        while (entries2.hasNext()) {
             Map.Entry<Location, Integer> entry2 = entries2.next();
 
             if (entry2.getValue() != 7) {
@@ -205,7 +227,7 @@ public class Schedule {
 
         // Each team should have played 7 matches on their home ground
         Iterator<Map.Entry<Team, Integer>> entries3 = homeMatches.entrySet().iterator();
-        while (entries.hasNext()) {
+        while (entries3.hasNext()) {
             Map.Entry<Team, Integer> entry3 = entries3.next();
 
             if (entry3.getValue() != 7) {

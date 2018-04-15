@@ -57,4 +57,14 @@ public class Location {
 
         return Objects.hash(locationName);
     }
+
+    /**
+     * Convert the object into a String
+     *
+     * @return String equivalent of the Object
+     */
+    @Override
+    public String toString() {
+        return locationName;
+    }
 }

@@ -3,6 +3,7 @@ package geneticalgorithm;
 import geneticalgorithm.domain.Location;
 import geneticalgorithm.domain.Team;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -25,6 +26,8 @@ public class Data {
     private ArrayList<Team> teamList;
     private ArrayList<Location> locationList;
     private HashMap<String, HashMap<Location, Integer>> weather;
+
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
 
     /**
      * Constructor. Creates an instance for the class Data.
@@ -95,11 +98,9 @@ public class Data {
         Location location4 = new Location("Delhi");
         Location location5 = new Location("Mumbai");
         Location location6 = new Location("Punjab");
-        Location location7 = new Location("Rajastan");
-        Location location8 = new Location("Hyderabad");
 
         locationList.clear();
-        locationList.addAll(Arrays.asList(location1, location2, location3, location4, location5, location6, location7, location8));
+        locationList.addAll(Arrays.asList(location1, location2, location3, location4, location5, location6));
 
         Team team1 = new Team("Chennai Super Kings", location1);
         Team team2 = new Team("Royal Challengers Banglore", location2);
@@ -107,17 +108,15 @@ public class Data {
         Team team4 = new Team("Delhi Daredevils", location4);
         Team team5 = new Team("Mumbai Indians", location5);
         Team team6 = new Team("Kings XI Punjab", location6);
-        Team team7 = new Team("Rajasthan Royals", location7);
-        Team team8 = new Team("Sunrisers Hyderabad", location8);
 
 
         teamList.clear();
-        teamList.addAll(Arrays.asList(team1, team2, team3, team4, team5, team6, team7, team8));
+        teamList.addAll(Arrays.asList(team1, team2, team3, team4, team5, team6));
 
         weather.clear();
         for (Date d : dates) {
             HashMap<Location, Integer> map = new HashMap<>();
-            weather.put(d.toString(), map);
+            weather.put(dateFormat.format(d), map);
             for (Location l : locationList) {
                 map.put(l, (new Random()).nextInt(100));
             }
