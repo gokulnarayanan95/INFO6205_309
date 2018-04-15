@@ -6,7 +6,7 @@ import geneticalgorithm.domain.Schedule;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This class implements Genetic Algorithm
+ * This class implements Genetic Algorithm (With multi-threading)
  *
  * @author Gokul Anantha Narayanan, Krupashankar Sundararajan, Raghavan Renganathan
  * @version 1.0
@@ -15,10 +15,10 @@ import java.util.concurrent.CompletableFuture;
 public class GeneticAlgorithmDriver {
     static final double MUTATION_RATE = 0.05;
     static final double CROSSOVER_RATE = 0.5;
-    static final int TOURNAMENT_SELECTION_SIZE = 50;
+    static final int TOURNAMENT_SELECTION_SIZE = 100;
 
-    private static final int POPULATION_SIZE = 5000;
-    private static final int COLONY_SIZE = 100;
+    private static final int POPULATION_SIZE = 10000;
+    private static final int COLONY_SIZE = 500;
     private static Population population = null;
     private static Data data = new Data();
 

@@ -1,15 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package geneticalgorithm;
 
+import geneticalgorithm.domain.Fixture;
+import geneticalgorithm.domain.Schedule;
+import javax.swing.table.DefaultTableModel;
+
 /**
+ * This class implements Genetic Algorithm with UI
  *
- * @author Raghavan Renganathan <renganathan.raghavan@gmail.com>
+ * @author Gokul Anantha Narayanan, Krupashankar Sundararajan, Raghavan Renganathan
+ * @version 1.0
+ * @since 04/14/2018
  */
 public class GeneticAlgorithmDriverWithUI extends javax.swing.JFrame {
+
+    static final double MUTATION_RATE = 0.05;
+    static final double CROSSOVER_RATE = 0.5;
+    static final int TOURNAMENT_SELECTION_SIZE = 10;
+    static int generation = 0;
+
+    private static final int POPULATION_SIZE = 25;
+    private static final Data DATA = new Data();
+    private static Population population = new Population(POPULATION_SIZE, DATA, true);
+
+    private void reproduce() {
+        Algorithm algorithm = new Algorithm(DATA);
+        population = algorithm.evolve(population).sortByFitness();
+        Schedule best = population.getSchedules().get(0);
+        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        Object[] row = new Object[4];
+        model.setRowCount(0);
+        for (Fixture f : best.getFixtureList()) {
+            row[0] = Data.dateFormat.format(f.getDate());
+            row[1] = f.getHomeTeam();
+            row[2] = f.getAwayTeam();
+            row[3] = f.getLocation();
+            
+            model.addRow(row);
+        }
+        
+        txtFieldFitness.setText(String.format("%.5f", best.getFitness()));
+        txtFieldConflicts.setText(String.valueOf(best.getConflicts()));
+    }
 
     /**
      * Creates new form GeneticAlgorithmDriverWithUI
@@ -169,8 +201,8 @@ public class GeneticAlgorithmDriverWithUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nxtGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nxtGenerationActionPerformed
-        txtFieldGenerationNumber.setText(generation + "");
-        runAlgorithm(0, POPULATION_SIZE);
+        txtFieldGenerationNumber.setText(String.valueOf(++generation));
+        reproduce();
     }//GEN-LAST:event_nxtGenerationActionPerformed
 
     /**
@@ -203,7 +235,9 @@ public class GeneticAlgorithmDriverWithUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GeneticAlgorithmDriverWithUI().setVisible(true);
+                GeneticAlgorithmDriverWithUI driver =  new GeneticAlgorithmDriverWithUI();
+                driver.setTitle("Genetic Algorithm");
+                driver.setVisible(true);
             }
         });
     }

@@ -83,21 +83,17 @@ public class Data {
         Location location2 = new Location("Banglore");
         Location location3 = new Location("Kolkata");
         Location location4 = new Location("Delhi");
-        Location location5 = new Location("Mumbai");
-        Location location6 = new Location("Punjab");
 
         locationList.clear();
-        locationList.addAll(Arrays.asList(location1, location2, location3, location4, location5, location6));
+        locationList.addAll(Arrays.asList(location1, location2, location3, location4));
 
         Team team1 = new Team("Chennai Super Kings", location1);
         Team team2 = new Team("Royal Challengers Banglore", location2);
         Team team3 = new Team("Kolkata Knight Riders", location3);
         Team team4 = new Team("Delhi Daredevils", location4);
-        Team team5 = new Team("Mumbai Indians", location5);
-        Team team6 = new Team("Kings XI Punjab", location6);
 
         teamList.clear();
-        teamList.addAll(Arrays.asList(team1, team2, team3, team4, team5, team6));
+        teamList.addAll(Arrays.asList(team1, team2, team3, team4));
 
         int count = 0;
         Date currDate = new Date();
