@@ -79,6 +79,23 @@ public class Fixture {
     @Override
     public String toString() {
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        return String.format("%s\t\t|\t\t%s\t\t\t|\t\t\t%s\t\t\t|\t\t\t%s", df.format(date), homeTeam, awayTeam, location);
+        return String.format("%s\t|\t%s\t|\t%s\t|\t%s", df.format(date), fillToLengthWithSpaces(homeTeam.toString(), 30),
+                fillToLengthWithSpaces(awayTeam.toString(), 30), location);
+    }
+
+    /**
+     * A helper to change a string's length by suffixing empty spaces
+     *
+     * @param s The string to be formatted
+     * @param l Number of characters required
+     * @return The formatted string
+     */
+    private String fillToLengthWithSpaces(String s, int l) {
+        StringBuilder sBuilder = new StringBuilder(s);
+        for (int i = 0; i < l; i++) {
+            if (i >= sBuilder.length())
+                sBuilder.append(" ");
+        }
+        return sBuilder.toString();
     }
 }

@@ -23,9 +23,9 @@ public class Population {
      *
      * @param size       Size of the population
      * @param data       The whole data set
-     * @param initialize    Indicates whether to initiate with random data
+     * @param initialize Indicates whether to initiate with random data
      */
-   public  Population(int size, Data data, boolean initialize) {
+    public Population(int size, Data data, boolean initialize) {
         schedules = new ArrayList<>(size);
         if (initialize)
             for (int i = 0; i < size; i++)
@@ -38,7 +38,7 @@ public class Population {
      * @param s1 List 1 of schedule
      * @param s2 List 2 of schedule
      */
-   public Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
+    public Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
         schedules = new ArrayList<>();
         schedules.addAll(s1);
         schedules.addAll(s2);
@@ -49,7 +49,7 @@ public class Population {
      *
      * @return size of the population
      */
-   public int size() {
+    public int size() {
         return schedules.size();
     }
 
@@ -58,7 +58,7 @@ public class Population {
      *
      * @param s The schedule that has to be added
      */
-   public void addSchedule(Schedule s) {
+    public void addSchedule(Schedule s) {
         schedules.add(s);
     }
 
@@ -67,7 +67,7 @@ public class Population {
      *
      * @return List of all schedules
      */
-   public ArrayList<Schedule> getSchedules() {
+    public ArrayList<Schedule> getSchedules() {
         return schedules;
     }
 

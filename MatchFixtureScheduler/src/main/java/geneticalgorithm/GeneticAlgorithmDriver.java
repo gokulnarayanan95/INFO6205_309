@@ -83,16 +83,12 @@ public class GeneticAlgorithmDriver {
 
             System.out.println("\n\nBest Schedule:\n");
 
-            System.out.println("Date\t\t|\t\tHome Team\t\t|\t\tAway Team\t\t|\t\tLocation");
-            best.getFixures().sort((f1, f2) -> {
-                if (f1.getDate().after(f2.getDate()))
-                    return 1;
-                else if (f1.getDate().before(f2.getDate()))
-                    return -1;
-                else
-                    return 0;
-            });
-            for (Fixture f : best.getFixures()) {
+            System.out.println("Date\t\t|\tHome Team\t\t\t|\tAway Team\t\t\t|\tLocation");
+            for (int i = 0; i < 120; i++)
+                System.out.print("=");
+            System.out.println();
+
+            for (Fixture f : best.getFixtureList()) {
                 System.out.println(f);
             }
         }

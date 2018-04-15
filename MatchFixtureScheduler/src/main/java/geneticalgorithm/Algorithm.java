@@ -58,6 +58,7 @@ class Algorithm {
         }
         for (Schedule s : newPopulation.getSchedules()) {
             mutation(s);
+            s.sortFixturesByDate();
         }
         return newPopulation;
     }
@@ -75,9 +76,9 @@ class Algorithm {
         for (int i = 0; i < s1.size(); i++) {
             // Crossover
             if (Math.random() <= CROSSOVER_RATE) {
-                newSol.getFixures().set(i, s1.getFixures().get(i));
+                newSol.getFixtureList().set(i, s1.getFixtureList().get(i));
             } else {
-                newSol.getFixures().set(i, s2.getFixures().get(i));
+                newSol.getFixtureList().set(i, s2.getFixtureList().get(i));
             }
         }
         return newSol;
@@ -93,8 +94,8 @@ class Algorithm {
         for (int i = 0; i < s1.size(); i++) {
             if (Math.random() <= MUTATION_RATE) {
                 // Create random gene
-                Fixture fix = tempSchedule.getFixures().get(i);
-                s1.getFixures().set(i, fix);
+                Fixture fix = tempSchedule.getFixtureList().get(i);
+                s1.getFixtureList().set(i, fix);
             }
         }
     }

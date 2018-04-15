@@ -19,6 +19,7 @@ import java.util.*;
  * @since 04/13/2018
  */
 public class Data {
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     /**
      * The member variables for holding the data
      */
@@ -27,12 +28,10 @@ public class Data {
     private ArrayList<Location> locationList;
     private HashMap<String, HashMap<Location, Integer>> weather;
 
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
-
     /**
      * Constructor. Creates an instance for the class Data.
      */
-    Data() {
+    public Data() {
         dates = new ArrayList<>();
         teamList = new ArrayList<>();
         locationList = new ArrayList<>();
@@ -80,18 +79,6 @@ public class Data {
      * This function initializes all the member variable with default values. In this case the data.
      */
     void initializeData() {
-        int count = 0;
-        Date currDate = new Date();
-        Calendar today = Calendar.getInstance();
-        today.setTime(currDate);
-        dates.clear();
-        while (count < 60) {
-            dates.add(today.getTime());
-            today.add(Calendar.DAY_OF_YEAR, 1);
-            count++;
-        }
-
-
         Location location1 = new Location("Chennai");
         Location location2 = new Location("Banglore");
         Location location3 = new Location("Kolkata");
@@ -109,47 +96,19 @@ public class Data {
         Team team5 = new Team("Mumbai Indians", location5);
         Team team6 = new Team("Kings XI Punjab", location6);
 
-
         teamList.clear();
         teamList.addAll(Arrays.asList(team1, team2, team3, team4, team5, team6));
 
-        weather.clear();
-        for (Date d : dates) {
-            HashMap<Location, Integer> map = new HashMap<>();
-            weather.put(dateFormat.format(d), map);
-            for (Location l : locationList) {
-                map.put(l, (new Random()).nextInt(100));
-            }
-        }
-    }
-    
-    void initializeTestData() {
         int count = 0;
         Date currDate = new Date();
         Calendar today = Calendar.getInstance();
         today.setTime(currDate);
         dates.clear();
-        while (count < 10) {
+        while (count <= (teamList.size() * teamList.size())) {
             dates.add(today.getTime());
             today.add(Calendar.DAY_OF_YEAR, 1);
             count++;
         }
-
-
-        Location location1 = new Location("Chennai");
-        Location location2 = new Location("Banglore");
-        Location location3 = new Location("Kolkata");
-
-        locationList.clear();
-        locationList.addAll(Arrays.asList(location1, location2, location3));
-
-        Team team1 = new Team("Chennai Super Kings", location1);
-        Team team2 = new Team("Royal Challengers Banglore", location2);
-        Team team3 = new Team("Kolkata Knight Riders", location3);
- 
-
-        teamList.clear();
-        teamList.addAll(Arrays.asList(team1, team2, team3));
 
         weather.clear();
         for (Date d : dates) {
