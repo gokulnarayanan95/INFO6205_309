@@ -23,6 +23,7 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
     private static final int COLONY_SIZE = 100;
     private static Population population = null;
     private static Data data = new Data();
+    int generation;
     /**
      * Creates new form GeneticAlgorithmDriverUI
      */
@@ -67,7 +68,7 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
     }
 
     private void reproduce() {
-        int generation = 0;
+        generation = 0;
         Algorithm algorithm = new Algorithm(data);
 
         while (population.getSchedules().get(0).getFitness() != 1.0) {
@@ -120,9 +121,9 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtFieldConflicts = new javax.swing.JTextField();
+        nxtGeneration = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1366, 768));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1366, 768));
@@ -172,6 +173,13 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
 
         txtFieldConflicts.setEditable(false);
 
+        nxtGeneration.setText("Next Generation");
+        nxtGeneration.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nxtGenerationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -184,19 +192,25 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtFieldGenerationNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFieldConflicts, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFieldFitness, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 262, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtFieldConflicts, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFieldFitness, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 267, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(nxtGeneration, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +233,9 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtFieldConflicts))
-                        .addGap(0, 225, Short.MAX_VALUE)))
+                        .addGap(76, 76, 76)
+                        .addComponent(nxtGeneration, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 101, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -236,6 +252,11 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nxtGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nxtGenerationActionPerformed
+       txtFieldGenerationNumber.setText(generation+"");
+        runAlgorithm(0, POPULATION_SIZE);
+    }//GEN-LAST:event_nxtGenerationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,7 +290,7 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
             public void run() {
                 GeneticAlgorithmDriverUI driver = new GeneticAlgorithmDriverUI();
                 driver.setVisible(true);
-                driver.runAlgorithm(0, POPULATION_SIZE);
+                
             }
         });
     }
@@ -282,6 +303,7 @@ public class GeneticAlgorithmDriverUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton nxtGeneration;
     private javax.swing.JTextField txtFieldConflicts;
     private javax.swing.JTextField txtFieldFitness;
     private javax.swing.JTextField txtFieldGenerationNumber;

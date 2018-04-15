@@ -28,7 +28,7 @@ public class Fixture {
      * @param awayTeam The another team playing in the match
      * @param location The location of the match
      */
-    Fixture(Date date, Team homeTeam, Team awayTeam, Location location) {
+    public Fixture(Date date, Team homeTeam, Team awayTeam, Location location) {
         this.date = date;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;

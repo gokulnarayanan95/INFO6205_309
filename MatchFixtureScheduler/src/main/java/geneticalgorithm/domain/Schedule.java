@@ -55,6 +55,7 @@ public class Schedule {
      *
      * @param data Data set using which the schedule has to be made
      */
+    
     public Schedule(Data data) {
         fitness = (double) -1;
         fixtureList = new ArrayList<>();
@@ -63,7 +64,14 @@ public class Schedule {
         matchesInLocation = new HashMap<>();
         initialize(data);
     }
-
+    
+    public Schedule(){
+        fitness = (double) -1;
+        fixtureList = new ArrayList<>();
+        matchesPlayed = new HashMap<>();
+        homeMatches = new HashMap<>();
+        matchesInLocation = new HashMap<>();
+    }
     /**
      * This method initializes schedule randomly based on the total data-set
      *
@@ -142,7 +150,7 @@ public class Schedule {
      *
      * @return fitness of this schedule
      */
-    private double computeFitness() {
+    public  double computeFitness() {
         conflicts = 0;
 
         matchesPlayed.clear();
@@ -237,4 +245,46 @@ public class Schedule {
 
         return (double) 1 / (1 + conflicts);
     }
+
+    public HashMap<String, HashMap<Location, Integer>> getWeathers() {
+        return weathers;
+    }
+
+    public void setWeathers(HashMap<String, HashMap<Location, Integer>> weathers) {
+        this.weathers = weathers;
+    }
+
+    public HashMap<Team, Integer> getMatchesPlayed() {
+        return matchesPlayed;
+    }
+
+    public void setMatchesPlayed(HashMap<Team, Integer> matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
+    }
+
+    public HashMap<Team, Integer> getHomeMatches() {
+        return homeMatches;
+    }
+
+    public void setHomeMatches(HashMap<Team, Integer> homeMatches) {
+        this.homeMatches = homeMatches;
+    }
+
+    public HashMap<Location, Integer> getMatchesInLocation() {
+        return matchesInLocation;
+    }
+
+    public void setMatchesInLocation(HashMap<Location, Integer> matchesInLocation) {
+        this.matchesInLocation = matchesInLocation;
+    }
+
+    public ArrayList<Fixture> getFixtureList() {
+        return fixtureList;
+    }
+
+    public void setFixtureList(ArrayList<Fixture> fixtureList) {
+        this.fixtureList = fixtureList;
+    }
+    
+    
 }

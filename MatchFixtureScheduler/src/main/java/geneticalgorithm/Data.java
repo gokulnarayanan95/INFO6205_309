@@ -122,4 +122,42 @@ public class Data {
             }
         }
     }
+    
+    void initializeTestData() {
+        int count = 0;
+        Date currDate = new Date();
+        Calendar today = Calendar.getInstance();
+        today.setTime(currDate);
+        dates.clear();
+        while (count < 10) {
+            dates.add(today.getTime());
+            today.add(Calendar.DAY_OF_YEAR, 1);
+            count++;
+        }
+
+
+        Location location1 = new Location("Chennai");
+        Location location2 = new Location("Banglore");
+        Location location3 = new Location("Kolkata");
+
+        locationList.clear();
+        locationList.addAll(Arrays.asList(location1, location2, location3));
+
+        Team team1 = new Team("Chennai Super Kings", location1);
+        Team team2 = new Team("Royal Challengers Banglore", location2);
+        Team team3 = new Team("Kolkata Knight Riders", location3);
+ 
+
+        teamList.clear();
+        teamList.addAll(Arrays.asList(team1, team2, team3));
+
+        weather.clear();
+        for (Date d : dates) {
+            HashMap<Location, Integer> map = new HashMap<>();
+            weather.put(dateFormat.format(d), map);
+            for (Location l : locationList) {
+                map.put(l, (new Random()).nextInt(100));
+            }
+        }
+    }
 }

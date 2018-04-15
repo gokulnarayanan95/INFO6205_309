@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 04/13/2018
  */
-class Population {
+public class Population {
 
     /**
      * An list of all possible schedules
@@ -25,7 +25,7 @@ class Population {
      * @param data       The whole data set
      * @param initialize    Indicates whether to initiate with random data
      */
-    Population(int size, Data data, boolean initialize) {
+   public  Population(int size, Data data, boolean initialize) {
         schedules = new ArrayList<>(size);
         if (initialize)
             for (int i = 0; i < size; i++)
@@ -38,7 +38,7 @@ class Population {
      * @param s1 List 1 of schedule
      * @param s2 List 2 of schedule
      */
-    Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
+   public Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
         schedules = new ArrayList<>();
         schedules.addAll(s1);
         schedules.addAll(s2);
@@ -49,7 +49,7 @@ class Population {
      *
      * @return size of the population
      */
-    int size() {
+   public int size() {
         return schedules.size();
     }
 
@@ -58,7 +58,7 @@ class Population {
      *
      * @param s The schedule that has to be added
      */
-    void addSchedule(Schedule s) {
+   public void addSchedule(Schedule s) {
         schedules.add(s);
     }
 
@@ -67,7 +67,7 @@ class Population {
      *
      * @return List of all schedules
      */
-    ArrayList<Schedule> getSchedules() {
+   public ArrayList<Schedule> getSchedules() {
         return schedules;
     }
 
@@ -76,7 +76,7 @@ class Population {
      *
      * @return the best fitting schedule
      */
-    Schedule getFittest() {
+    public Schedule getFittest() {
         return sortByFitness().getSchedules().get(0);
     }
 
@@ -85,7 +85,7 @@ class Population {
      *
      * @return The instance with sorted population
      */
-    Population sortByFitness() {
+    public Population sortByFitness() {
         schedules.sort((schedule1, schedule2) -> {
             if (Math.abs(schedule1.getFitness() - schedule2.getFitness()) < .000000001) {
                 return 0;
