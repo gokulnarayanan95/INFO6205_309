@@ -18,17 +18,17 @@ public class Schedule {
     /**
      * This hash-map stores the probability of rain for each day at each location
      */
-    private HashMap<Date, HashMap<Location, Integer>> weathers;
+    private HashMap<String, HashMap<Location, Integer>> weathers;
 
     /**
      * This stores the number of matches played by each team
      */
-    private HashMap<Team, Integer> matchesplayed;
+    private HashMap<Team, Integer> matchesPlayed;
 
     /**
      * This stores the number of matches played in home-ground by each team
      */
-    private HashMap<Team, Integer> homematches;
+    private HashMap<Team, Integer> homeMatches;
 
     /**
      * This stores the number of matches played at each location
@@ -58,6 +58,9 @@ public class Schedule {
     public Schedule(Data data) {
         fitness = (double) -1;
         fixtureList = new ArrayList<>();
+        matchesPlayed = new HashMap<>();
+        homeMatches = new HashMap<>();
+        matchesInLocation = new HashMap<>();
         initialize(data);
     }
 
@@ -69,8 +72,8 @@ public class Schedule {
     private void initialize(Data data) {
         weathers = data.getWeather();
         for (Team team : data.getTeamList()) {
-            homematches.put(team, 0);
-            matchesplayed.put(team, 0);
+            homeMatches.put(team, 0);
+            matchesPlayed.put(team, 0);
         }
         for (Location location : data.getLocationList()) {
             matchesInLocation.put(location, 0);
@@ -132,48 +135,56 @@ public class Schedule {
     private double computeFitness() {
         conflicts = 0;
 
-
         for (int i = 0; i < fixtureList.size(); i++) {
             Fixture f1 = fixtureList.get(i);
-            int weatherIndex = weathers.get(f1.getDate()).get(f1.getLocation());
-            if (weatherIndex > 30 && weatherIndex < 60)
+
+            // Adding penalties for scheduling matches where the probability of raining is high
+            int weatherIndex = weathers.get(f1.getDate().toString()).get(f1.getLocation());
+            if (weatherIndex > 50 && weatherIndex <= 70)
                 conflicts++;
-            if (weatherIndex > 60 && weatherIndex < 80)
-                conflicts = conflicts + 2;
-            if (weatherIndex > 80)
-                conflicts = conflicts + 3;
+            if (weatherIndex > 70 && weatherIndex <= 90)
+                conflicts += 2;
+            if (weatherIndex > 90)
+                conflicts += 3;
 
+            // Calculation of total matches played by each team
+            matchesPlayed.put(f1.getHomeTeam(), matchesPlayed.get(f1.getHomeTeam()) + 1);
+            matchesPlayed.put(f1.getAwayTeam(), matchesPlayed.get(f1.getAwayTeam()) + 1);
 
-            matchesplayed.put(f1.getHomeTeam(), matchesplayed.get(f1.getHomeTeam()) + 1);
-            matchesplayed.put(f1.getAwayTeam(), matchesplayed.get(f1.getAwayTeam()) + 1);
+            // Calculation of total matches played by each location
             matchesInLocation.put(f1.getLocation(), matchesInLocation.get(f1.getLocation()) + 1);
-            homematches.put(f1.getHomeTeam(), homematches.get(f1.getHomeTeam()) + 1);
 
+            // Calculation of total matches played at home ground
+            homeMatches.put(f1.getHomeTeam(), homeMatches.get(f1.getHomeTeam()) + 1);
 
+            // Computing next day
             Date currentDate = f1.getDate();
             LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
             localDateTime = localDateTime.plusDays(1);
             Date currentDatePlusOneDay = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-
+            // Same team should not have matches on the next day
+            // Two matches should not happen on the same day
             for (int j = i + 1; j < fixtureList.size(); j++) {
-
                 Fixture f2 = fixtureList.get(j);
-                if (f1.getDate() == f2.getDate()) {
+                if (f1.getDate().equals(f2.getDate())) {
                     conflicts++;
+                    continue;
                 }
 
-                if (currentDatePlusOneDay == f2.getDate()) {
-                    if (f1.getAwayTeam() == f2.getAwayTeam() || f1.getAwayTeam() == f2.getHomeTeam() || f1.getHomeTeam() == f2.getHomeTeam() || f1.getHomeTeam() == f2.getAwayTeam()) {
+                if (currentDatePlusOneDay.equals(f2.getDate())) {
+                    if (f1.getAwayTeam().equals(f2.getAwayTeam()) ||
+                            f1.getAwayTeam().equals(f2.getHomeTeam()) ||
+                            f1.getHomeTeam().equals(f2.getHomeTeam()) ||
+                            f1.getHomeTeam().equals(f2.getAwayTeam())) {
                         conflicts++;
                     }
                 }
-
             }
         }
 
-
-        Iterator<Map.Entry<Team, Integer>> entries = matchesplayed.entrySet().iterator();
+        // Each team should have played 14 matches
+        Iterator<Map.Entry<Team, Integer>> entries = matchesPlayed.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<Team, Integer> entry = entries.next();
 
@@ -181,6 +192,8 @@ public class Schedule {
                 conflicts++;
             }
         }
+
+        // Each location should have hosted 7 matches
         Iterator<Map.Entry<Location, Integer>> entries2 = matchesInLocation.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<Location, Integer> entry2 = entries2.next();
@@ -190,7 +203,8 @@ public class Schedule {
             }
         }
 
-        Iterator<Map.Entry<Team, Integer>> entries3 = homematches.entrySet().iterator();
+        // Each team should have played 7 matches on their home ground
+        Iterator<Map.Entry<Team, Integer>> entries3 = homeMatches.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<Team, Integer> entry3 = entries3.next();
 
@@ -198,7 +212,6 @@ public class Schedule {
                 conflicts++;
             }
         }
-
 
         return (double) 1 / (1 + conflicts);
     }

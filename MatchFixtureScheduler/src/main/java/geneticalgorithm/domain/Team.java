@@ -1,5 +1,7 @@
 package geneticalgorithm.domain;
 
+import java.util.Objects;
+
 /**
  * Data structure for storing Teams
  *
@@ -11,16 +13,8 @@ public class Team {
     /**
      * Member variable representing the Team. Their name and their home-ground
      */
-    String name;
-    Location homeGround;
-
-    /**
-     * Creates an instance of a Team with default values
-     */
-    public Team() {
-        name = "";
-        homeGround = new Location();
-    }
+    private String name;
+    private Location homeGround;
 
     /**
      * Creates an instance of a team with the passed parameters
@@ -49,5 +43,30 @@ public class Team {
      */
     public Location getHomeGround() {
         return homeGround;
+    }
+
+    /**
+     * Checks for equality
+     *
+     * @param o Another object
+     * @return true if both are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Team)) return false;
+        Team team = (Team) o;
+        return Objects.equals(name, team.name) &&
+                Objects.equals(homeGround, team.homeGround);
+    }
+
+    /**
+     * Generates hashcode for this instance of object
+     *
+     * @return hashcode of the object
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, homeGround);
     }
 }

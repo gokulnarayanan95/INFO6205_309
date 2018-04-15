@@ -24,16 +24,17 @@ public class Data {
     private ArrayList<Date> dates;
     private ArrayList<Team> teamList;
     private ArrayList<Location> locationList;
-    private HashMap<Date, HashMap<Location, Integer>> weather;
+    private HashMap<String, HashMap<Location, Integer>> weather;
 
     /**
      * Constructor. Creates an instance for the class Data.
      */
-    public Data() {
+    Data() {
         dates = new ArrayList<>();
         teamList = new ArrayList<>();
         locationList = new ArrayList<>();
         weather = new HashMap<>();
+        initializeData();
     }
 
     /**
@@ -68,7 +69,7 @@ public class Data {
      *
      * @return The value of weather variable
      */
-    public HashMap<Date, HashMap<Location, Integer>> getWeather() {
+    public HashMap<String, HashMap<Location, Integer>> getWeather() {
         return weather;
     }
 
@@ -116,7 +117,7 @@ public class Data {
         weather.clear();
         for (Date d : dates) {
             HashMap<Location, Integer> map = new HashMap<>();
-            weather.put(d, map);
+            weather.put(d.toString(), map);
             for (Location l : locationList) {
                 map.put(l, (new Random()).nextInt(100));
             }

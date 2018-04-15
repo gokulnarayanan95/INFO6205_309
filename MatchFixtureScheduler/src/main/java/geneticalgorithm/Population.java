@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 04/13/2018
  */
-public class Population {
+class Population {
 
     /**
      * An list of all possible schedules
@@ -23,15 +23,13 @@ public class Population {
      *
      * @param size       Size of the population
      * @param data       The whole data set
-     * @param initialize Flag to indicate to initialize with default values or not
+     * @param initialize    Indicates whether to initiate with random data
      */
-    public Population(int size, Data data, boolean initialize) {
-
+    Population(int size, Data data, boolean initialize) {
         schedules = new ArrayList<>(size);
-        if (initialize) {
+        if (initialize)
             for (int i = 0; i < size; i++)
                 schedules.add(new Schedule(data));
-        }
     }
 
     /**
@@ -40,7 +38,7 @@ public class Population {
      * @param s1 List 1 of schedule
      * @param s2 List 2 of schedule
      */
-    public Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
+    Population(ArrayList<Schedule> s1, ArrayList<Schedule> s2) {
         schedules = new ArrayList<>();
         schedules.addAll(s1);
         schedules.addAll(s2);
@@ -51,7 +49,7 @@ public class Population {
      *
      * @return size of the population
      */
-    public int size() {
+    int size() {
         return schedules.size();
     }
 
@@ -60,7 +58,7 @@ public class Population {
      *
      * @param s The schedule that has to be added
      */
-    public void saveSchedule(Schedule s) {
+    void addSchedule(Schedule s) {
         schedules.add(s);
     }
 
@@ -69,7 +67,7 @@ public class Population {
      *
      * @return List of all schedules
      */
-    public ArrayList<Schedule> getSchedules() {
+    ArrayList<Schedule> getSchedules() {
         return schedules;
     }
 
@@ -78,8 +76,8 @@ public class Population {
      *
      * @return the best fitting schedule
      */
-    public Schedule getFittest() {
-        return null; // TODO
+    Schedule getFittest() {
+        return sortByFitness().getSchedules().get(0);
     }
 
     /**
@@ -87,15 +85,16 @@ public class Population {
      *
      * @return The instance with sorted population
      */
-    public Population sortByFitness() {
+    Population sortByFitness() {
         schedules.sort((schedule1, schedule2) -> {
-            int returnValue = 0;
-            if (schedule1.getFitness() > schedule2.getFitness()) {
-                returnValue = -1;
+            if (Math.abs(schedule1.getFitness() - schedule2.getFitness()) < .000000001) {
+                return 0;
+            } else if (schedule1.getFitness() > schedule2.getFitness()) {
+                return -1;
             } else if (schedule1.getFitness() < schedule2.getFitness()) {
-                returnValue = 1;
+                return 1;
             }
-            return returnValue;
+            return 0;
         });
         return this;
     }

@@ -10,22 +10,22 @@ import geneticalgorithm.domain.Schedule;
  * @version 1.0
  * @since 04/10/2018
  */
-public class Algorithm {
+class Algorithm {
 
     /**
      * A constant variable that defines the rate at which the crossover happens
      */
-    private static final double UNIFORM_RATE = 0.5;
+    private static final double CROSSOVER_RATE = GeneticAlgorithmDriver.CROSSOVER_RATE;
 
     /**
      * A constant variable that defines the probability of Mutation
      */
-    private static final double MUTATION_RATE = 0.015;
+    private static final double MUTATION_RATE = GeneticAlgorithmDriver.MUTATION_RATE;
 
     /**
      * A constant variable that defines the size of the Tournament
      */
-    private static final int TOURNAMENT_SIZE = 5;
+    private static final int TOURNAMENT_SIZE = GeneticAlgorithmDriver.TOURNAMENT_SELECTION_SIZE;
 
     /**
      * A variable to hold the data set
@@ -37,7 +37,7 @@ public class Algorithm {
      *
      * @param data The data set over which the algorithm is going to be run
      */
-    public Algorithm(Data data) {
+    Algorithm(Data data) {
         this.data = data;
         this.data.initializeData();
     }
@@ -48,13 +48,13 @@ public class Algorithm {
      * @param pop The population over which evolution has to be done
      * @return The evolved population
      */
-    private Population evolve(Population pop) {
+    Population evolve(Population pop) {
         Population newPopulation = new Population(pop.size(), data, false);
         for (int i = 0; i < pop.size(); i++) {
-            Schedule s1 = tournamentSelection(pop);
-            Schedule s2 = tournamentSelection(pop);
+            Schedule s1 = parentSelection(pop);
+            Schedule s2 = parentSelection(pop);
             Schedule newSchedule = crossover(s1, s2);
-            newPopulation.saveSchedule(newSchedule);
+            newPopulation.addSchedule(newSchedule);
         }
         for (Schedule s : newPopulation.getSchedules()) {
             mutation(s);
@@ -74,7 +74,7 @@ public class Algorithm {
         // Loop through genes
         for (int i = 0; i < s1.size(); i++) {
             // Crossover
-            if (Math.random() <= UNIFORM_RATE) {
+            if (Math.random() <= CROSSOVER_RATE) {
                 newSol.getFixures().set(i, s1.getFixures().get(i));
             } else {
                 newSol.getFixures().set(i, s2.getFixures().get(i));
@@ -100,17 +100,17 @@ public class Algorithm {
     }
 
     /**
-     * This function selects the children which are fit for the next iteration
+     * This function selects the population which are fit for the next iteration
      *
      * @param pop The population in which the good fits has to be found
      * @return The fittest solution
      */
-    private Schedule tournamentSelection(Population pop) {
+    private Schedule parentSelection(Population pop) {
         Population tournament = new Population(TOURNAMENT_SIZE, data, false);
         // For each place in the tournament get a random individual
         for (int i = 0; i < TOURNAMENT_SIZE; i++) {
             int randomId = (int) (Math.random() * pop.size());
-            tournament.getSchedules().set(i, pop.getSchedules().get(randomId));
+            tournament.getSchedules().add(pop.getSchedules().get(randomId));
         }
         // Get the fittest
         return tournament.getFittest();

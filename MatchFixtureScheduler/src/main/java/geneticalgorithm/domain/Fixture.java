@@ -20,16 +20,6 @@ public class Fixture {
     private Location location;
 
     /**
-     * Creates an instance of a fixture with default values
-     */
-    public Fixture() {
-        date = new Date();
-        homeTeam = new Team();
-        awayTeam = new Team();
-        location = new Location();
-    }
-
-    /**
      * Creates an instance of a fixture with values passed
      *
      * @param date     Date of the match fixture
@@ -37,7 +27,7 @@ public class Fixture {
      * @param awayTeam The another team playing in the match
      * @param location The location of the match
      */
-    public Fixture(Date date, Team homeTeam, Team awayTeam, Location location) {
+    Fixture(Date date, Team homeTeam, Team awayTeam, Location location) {
         this.date = date;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
@@ -49,7 +39,7 @@ public class Fixture {
      *
      * @return The value of the variable date
      */
-    public Date getDate() {
+    Date getDate() {
         return date;
     }
 
@@ -58,7 +48,7 @@ public class Fixture {
      *
      * @return The value of the variable homeTeam
      */
-    public Team getHomeTeam() {
+    Team getHomeTeam() {
         return homeTeam;
     }
 
@@ -67,7 +57,7 @@ public class Fixture {
      *
      * @return The value of the variable awayTeam
      */
-    public Team getAwayTeam() {
+    Team getAwayTeam() {
         return awayTeam;
     }
 
@@ -76,7 +66,7 @@ public class Fixture {
      *
      * @return The value of the variable location
      */
-    public Location getLocation() {
+    Location getLocation() {
         return location;
     }
 
