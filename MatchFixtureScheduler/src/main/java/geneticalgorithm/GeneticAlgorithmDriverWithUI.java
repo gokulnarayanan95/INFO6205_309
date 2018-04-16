@@ -12,10 +12,6 @@ import javax.swing.table.DefaultTableModel;
  * @since 04/14/2018
  */
 public class GeneticAlgorithmDriverWithUI extends javax.swing.JFrame {
-
-    static final double MUTATION_RATE = 0.05;
-    static final double CROSSOVER_RATE = 0.5;
-    static final int TOURNAMENT_SELECTION_SIZE = 10;
     static int generation = 0;
 
     private static final int POPULATION_SIZE = 25;

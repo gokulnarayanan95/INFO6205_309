@@ -17,3 +17,13 @@ While scheduling the fixtures, the following criteria have to be satisfied.
 - Created UI to see the improvements in each generation using swing (GeneticAlgorithmDriverWithUI.java)
 - Using properties file for configuring parameters for the Genetic Algorithm
 - Using log4j to log the outputs from each generation
+
+### How to run the program
+
+- The maven project is located inside the MatchFixtureScheduler folder
+- Load the maven dependencies
+- Build the application with the test cases provided
+- Run GeneticAlgorithmDriver.java to run the algorithm with multithreading
+- Run GeneticAlgorithmDriverWithUI.java to run the algorithm with User Interface
+
+
