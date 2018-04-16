@@ -269,7 +269,7 @@ public class GeneticAlgorithmTest {
         s1.getFixtureList().add(f5);
         s1.getFixtureList().add(f6);
 
-        int expected = 4;
+        int expected = 5;
         double ex = (double) 1 / (1 + expected);
         assertEquals(ex, s1.computeFitness(), .001);
     }
