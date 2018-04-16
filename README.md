@@ -1,4 +1,4 @@
-# Team 309
+# Match Fixture Scheduler - Team 309
 Final Project - Program Structures and Algorithms (INFO 6205)
 
 ### Problem Description
