@@ -97,23 +97,23 @@ public class Schedule {
 
         int totalFixtures = data.getTeamList().size() * (data.getTeamList().size() - 1);
 
-//        for (int i = 0; i < totalFixtures; i++) {
-//            Team homeTeam = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()));
-//            Team opponent;
-//            while ((opponent = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()))).equals(homeTeam));
-//            Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
-//
-//            fixtureList.add(new Fixture(d, homeTeam, opponent, homeTeam.getHomeGround()));
-//        }
-        for (Team team : data.getTeamList()) {
-            for (Team opponent : data.getTeamList()) {
-                if (team == opponent)
-                    continue;
-                Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
+        for (int i = 0; i < totalFixtures; i++) {
+            Team homeTeam = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()));
+            Team opponent;
+            while ((opponent = data.getTeamList().get((int) (data.getTeamList().size() * Math.random()))).equals(homeTeam));
+            Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
 
-                fixtureList.add(new Fixture(d, team, opponent, team.getHomeGround()));
-            }
+            fixtureList.add(new Fixture(d, homeTeam, opponent, homeTeam.getHomeGround()));
         }
+//        for (Team team : data.getTeamList()) {
+//            for (Team opponent : data.getTeamList()) {
+//                if (team == opponent)
+//                    continue;
+//                Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
+//
+//                fixtureList.add(new Fixture(d, team, opponent, team.getHomeGround()));
+//            }
+//        }
 
         sortFixturesByDate();
     }
