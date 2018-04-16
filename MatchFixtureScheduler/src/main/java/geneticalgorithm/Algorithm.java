@@ -3,6 +3,10 @@ package geneticalgorithm;
 import geneticalgorithm.domain.Fixture;
 import geneticalgorithm.domain.Schedule;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This class contains all the implementation of the Genetic Algorithm
  *
@@ -49,12 +53,15 @@ class Algorithm {
      * @return The evolved population
      */
     Population evolve(Population pop) {
+        pop.sortByFitness();
         Population newPopulation = new Population(pop.size(), data, false);
-        for (int i = 0; i < pop.size(); i++) {
+        while (newPopulation.size() < pop.size()) {
             Schedule s1 = parentSelection(pop);
             Schedule s2 = parentSelection(pop);
-            Schedule newSchedule = crossover(s1, s2);
-            newPopulation.addSchedule(newSchedule);
+//            Schedule newSchedule = crossover(s1, s2);
+//            newPopulation.addSchedule(newSchedule);
+            List<Schedule> children = crossover(s1, s2);
+            newPopulation.getSchedules().addAll(children);
         }
         for (Schedule s : newPopulation.getSchedules()) {
             mutation(s);
@@ -70,18 +77,21 @@ class Algorithm {
      * @param s2 The second parent solution set
      * @return The next generation solution set
      */
-    private Schedule crossover(Schedule s1, Schedule s2) {
+    private List<Schedule> crossover(Schedule s1, Schedule s2) {
         Schedule newSol = new Schedule(data);
+        Schedule newSol2 = new Schedule(data);
         // Loop through genes
+        int crossoverPoint = (int) (Math.random() * s1.size());
         for (int i = 0; i < s1.size(); i++) {
-            // Crossover
-            if (Math.random() <= CROSSOVER_RATE) {
-                newSol.getFixtureList().set(i, s1.getFixtureList().get(i));
-            } else {
+            if (i <= crossoverPoint) {
                 newSol.getFixtureList().set(i, s2.getFixtureList().get(i));
+                newSol2.getFixtureList().set(i, s1.getFixtureList().get(i));
+            } else {
+                newSol.getFixtureList().set(i, s1.getFixtureList().get(i));
+                newSol2.getFixtureList().set(i, s2.getFixtureList().get(i));
             }
         }
-        return newSol;
+        return new ArrayList<>(Arrays.asList(newSol, newSol2));
     }
 
     /**
@@ -110,7 +120,7 @@ class Algorithm {
         Population tournament = new Population(TOURNAMENT_SIZE, data, false);
         // For each place in the tournament get a random individual
         for (int i = 0; i < TOURNAMENT_SIZE; i++) {
-            int randomId = (int) (Math.random() * pop.size());
+            int randomId = (int) (Math.random() * pop.size() * GeneticAlgorithmDriver.CULLING_RATE);
             tournament.getSchedules().add(pop.getSchedules().get(randomId));
         }
         // Get the fittest

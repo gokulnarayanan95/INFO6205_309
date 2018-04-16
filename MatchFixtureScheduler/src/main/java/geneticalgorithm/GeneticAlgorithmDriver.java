@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import java.util.concurrent.CompletableFuture;
+
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 /**
@@ -34,6 +36,7 @@ public class GeneticAlgorithmDriver {
     static double MUTATION_RATE = 0.05;
     static double CROSSOVER_RATE = 0.5;
     static int TOURNAMENT_SELECTION_SIZE = 100;
+    static double CULLING_RATE = 0.5;
 
     private static int POPULATION_SIZE = 10000;
     private static int COLONY_SIZE = 500;
@@ -46,6 +49,9 @@ public class GeneticAlgorithmDriver {
      * @param args Command line arguments
      */
     public static void main(String[] args) {
+        // Configuring log4j
+        BasicConfigurator.configure();
+
         // Defining default properties
         Properties defaultProps = new Properties();
         defaultProps.setProperty("populationSize", "10000");
@@ -53,7 +59,8 @@ public class GeneticAlgorithmDriver {
         defaultProps.setProperty("tournamentSelectionSize", "100");
         defaultProps.setProperty("mutationRate", "0.015");
         defaultProps.setProperty("crossoverRate", "0.5");
-        
+        defaultProps.setProperty("cullingRate", "0.5");
+
         // Reading properties from the property file
         Properties properties = new Properties(defaultProps);
         try {
@@ -63,6 +70,7 @@ public class GeneticAlgorithmDriver {
             TOURNAMENT_SELECTION_SIZE = Integer.parseInt(properties.getProperty("tournamentSelectionSize"));
             MUTATION_RATE = Double.parseDouble(properties.getProperty("mutationRate"));
             CROSSOVER_RATE = Double.parseDouble(properties.getProperty("crossoverRate"));
+            CULLING_RATE = Double.parseDouble(properties.getProperty("cullingRate"));
         } catch (IOException|NumberFormatException ex) {
             log.debug("Exception happened when reading the properties file: " + ex.getMessage());
         }
@@ -73,6 +81,7 @@ public class GeneticAlgorithmDriver {
         log.info("Tournament Selection Size: " + TOURNAMENT_SELECTION_SIZE);
         log.info("Mutation Rate: " + MUTATION_RATE);
         log.info("Crossover Rate: " + CROSSOVER_RATE);
+        log.info("Culling Rate: " + CULLING_RATE);
 
         runAlgorithm(0, POPULATION_SIZE);
     }
@@ -139,7 +148,7 @@ public class GeneticAlgorithmDriver {
             Schedule best = population.getSchedules().get(0);
             Schedule worst = population.getSchedules().get(population.size() - 1);
 
-            log.info("\n");
+            System.out.println();
             log.info("Generation - " + (++generation));
             log.info("Best Schedule:");
             log.info(String.format("Fitness = %.5f", best.getFitness()));
@@ -154,7 +163,7 @@ public class GeneticAlgorithmDriver {
             log.info("Date\t\t|\tHome Team\t\t\t|\tAway Team\t\t\t|\tLocation");
             for (int i = 0; i < 120; i++)
                 System.out.print("=");
-            log.info("\n");
+            System.out.println();
 
             for (Fixture f : best.getFixtureList()) {
                 log.info(f);

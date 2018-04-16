@@ -253,6 +253,14 @@ public class Schedule {
                     break;
                 }
             }
+
+            // Two matches should not be same
+            j = 0;
+            while ((i + (++j)) < fixtureList.size()) {
+                f2 = fixtureList.get(i + j);
+                if (f1.getHomeTeam().equals(f2.getHomeTeam()) && f1.getAwayTeam().equals(f2.getAwayTeam()))
+                    conflicts++;
+            }
         }
 
         // Each team should have played 2 matches with each other teams
