@@ -105,15 +105,6 @@ public class Schedule {
 
             fixtureList.add(new Fixture(d, homeTeam, opponent, homeTeam.getHomeGround()));
         }
-//        for (Team team : data.getTeamList()) {
-//            for (Team opponent : data.getTeamList()) {
-//                if (team == opponent)
-//                    continue;
-//                Date d = data.getDates().get((int) (data.getDates().size() * Math.random()));
-//
-//                fixtureList.add(new Fixture(d, team, opponent, team.getHomeGround()));
-//            }
-//        }
 
         sortFixturesByDate();
     }
